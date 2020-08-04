@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6666BFC324D9A8E00019C0A2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6666BFC224D9A8E00019C0A2 /* main.cpp */; };
+		6666BFCF24D9B1270019C0A2 /* libopencv_core.4.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6666BFCE24D9B1270019C0A2 /* libopencv_core.4.4.0.dylib */; };
+		6666BFD124D9B14F0019C0A2 /* libfreenect.0.6.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6666BFD024D9B14F0019C0A2 /* libfreenect.0.6.1.dylib */; };
+		6666BFD324D9B16D0019C0A2 /* libopencv_video.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6666BFD224D9B16D0019C0A2 /* libopencv_video.dylib */; };
+		6666BFD524D9B1800019C0A2 /* libopencv_videoio.4.4.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6666BFD424D9B1800019C0A2 /* libopencv_videoio.4.4.0.dylib */; };
+		6666BFD724D9B1D20019C0A2 /* libopencv_imgproc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6666BFD624D9B1D20019C0A2 /* libopencv_imgproc.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,11 @@
 /* Begin PBXFileReference section */
 		6666BFBF24D9A8E00019C0A2 /* KinectVideo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = KinectVideo; sourceTree = BUILT_PRODUCTS_DIR; };
 		6666BFC224D9A8E00019C0A2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6666BFCE24D9B1270019C0A2 /* libopencv_core.4.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.4.4.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.4.0/lib/libopencv_core.4.4.0.dylib; sourceTree = "<group>"; };
+		6666BFD024D9B14F0019C0A2 /* libfreenect.0.6.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreenect.0.6.1.dylib; path = ../../../../../usr/local/lib/libfreenect.0.6.1.dylib; sourceTree = "<group>"; };
+		6666BFD224D9B16D0019C0A2 /* libopencv_video.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.dylib; path = ../../../../../usr/local/lib/libopencv_video.dylib; sourceTree = "<group>"; };
+		6666BFD424D9B1800019C0A2 /* libopencv_videoio.4.4.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videoio.4.4.0.dylib; path = ../../../../../usr/local/Cellar/opencv/4.4.0/lib/libopencv_videoio.4.4.0.dylib; sourceTree = "<group>"; };
+		6666BFD624D9B1D20019C0A2 /* libopencv_imgproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.dylib; path = ../../../../../usr/local/Cellar/opencv/4.4.0/lib/libopencv_imgproc.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +42,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6666BFCF24D9B1270019C0A2 /* libopencv_core.4.4.0.dylib in Frameworks */,
+				6666BFD124D9B14F0019C0A2 /* libfreenect.0.6.1.dylib in Frameworks */,
+				6666BFD324D9B16D0019C0A2 /* libopencv_video.dylib in Frameworks */,
+				6666BFD724D9B1D20019C0A2 /* libopencv_imgproc.dylib in Frameworks */,
+				6666BFD524D9B1800019C0A2 /* libopencv_videoio.4.4.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +58,7 @@
 			children = (
 				6666BFC124D9A8E00019C0A2 /* KinectVideo */,
 				6666BFC024D9A8E00019C0A2 /* Products */,
+				6666BFCB24D9B10A0019C0A2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +76,18 @@
 				6666BFC224D9A8E00019C0A2 /* main.cpp */,
 			);
 			path = KinectVideo;
+			sourceTree = "<group>";
+		};
+		6666BFCB24D9B10A0019C0A2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6666BFD624D9B1D20019C0A2 /* libopencv_imgproc.dylib */,
+				6666BFD424D9B1800019C0A2 /* libopencv_videoio.4.4.0.dylib */,
+				6666BFD224D9B16D0019C0A2 /* libopencv_video.dylib */,
+				6666BFD024D9B14F0019C0A2 /* libfreenect.0.6.1.dylib */,
+				6666BFCE24D9B1270019C0A2 /* libopencv_core.4.4.0.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +268,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/usr/local/include/libusb-1.0",
+					/usr/local/include/opencv4,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(PROJECT_DIR)",
+					/usr/local/Cellar/opencv/4.4.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,6 +286,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/usr/local/include/libusb-1.0",
+					/usr/local/include/opencv4,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(PROJECT_DIR)",
+					/usr/local/Cellar/opencv/4.4.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
