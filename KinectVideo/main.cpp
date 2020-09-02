@@ -72,8 +72,13 @@ public:
     bool GetVideo(cv::Mat& output) {
         m_rgbMutex.lock();
         if (m_new_rgb_frame) {
-            cv::cvtColor(m_rgbMat, output, cv::COLOR_RGB2BGR);
-            m_new_rgb_frame = false;
+            try {
+                cv::cvtColor(m_rgbMat, output, cv::COLOR_GRAY2BGR);
+                m_new_rgb_frame = false;
+            }
+            catch(...) {
+                printf("Failed to convert image");
+            }
             m_rgbMutex.unlock();
             return true;
         } else {
@@ -124,7 +129,7 @@ int main(int argc, char** argv) {
     Kinect& kinect = ctx.createDevice<Kinect>(0);
     std::cout << "Created kinect" << std::endl;
     
-    cv::Mat rgb(S, CV_8UC1, Scalar(0));
+    cv::Mat rgb(S, CV_8UC3, Scalar(0));
     
     std::signal(SIGINT, [](int) {
         die = true;
