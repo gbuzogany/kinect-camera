@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <csignal>
+#include <opencv2/highgui.hpp>
 
 using namespace std;
 using namespace cv;
@@ -49,11 +50,9 @@ private:
     
 public:
     Kinect(freenect_context* ctx, int index)
-    :Freenect::FreenectDevice(ctx, index) {
-        m_new_rgb_frame = false;
+    :Freenect::FreenectDevice(ctx, index), m_gamma(2048), m_new_rgb_frame(false) {
         
-        m_rgbMat = cv::Mat(cv::Size(640, 480), CV_8UC3, cv::Scalar(0));
-        m_gamma = std::vector<uint16_t>(2048);
+        m_rgbMat = cv::Mat(cv::Size(640, 480), CV_8UC1, cv::Scalar(0));
         for(auto i = 0; i < 2048; i++) {
             float v = i / 2048.0f;
             v = std::pow(v, 3) * 6;
@@ -91,17 +90,33 @@ std::string getcwd_string( void ) {
     return cwd;
 }
 
-std::string filename() {
+std::string filename(std::string extension) {
     std::stringstream ss;
     char buff[20];
     time_t now = time(NULL);
     strftime(buff, 20, "%Y%m%d-%H%M%S", localtime(&now));
     string cwd = getcwd_string();
     
-    ss << cwd << "/video/output_" << buff << ".mkv";
+    ss << cwd << "/video/output_" << buff << "." << extension;
     
     return ss.str();
 }
+
+Mat lookUpTable(1, 256, CV_8U);
+uchar* p = lookUpTable.ptr();
+
+int gamma_cor = 100;
+int gamma_max = 100;
+
+static void on_trackbar( int, void* )
+{
+    float gamma_ = (float)gamma_cor / 100.0;
+    
+    for( int i = 0; i < 256; ++i) {
+        p[i] = saturate_cast<uchar>(pow(i / 255.0, gamma_) * 255.0);
+    }
+}
+
 
 int main(int argc, char** argv) {
     cout << "Initializing" << std::endl;
@@ -115,7 +130,7 @@ int main(int argc, char** argv) {
     
     int fourcc = VideoWriter::fourcc('H','2','6','4');
     
-    string name = filename();
+    string name = filename("mkv");
     cout << name << endl;
     outputVideo.open(name, fourcc, 20, S);
     // end video writer
@@ -124,41 +139,60 @@ int main(int argc, char** argv) {
     std::cout << "Created Freenect" << std::endl;
     Kinect& kinect = ctx.createDevice<Kinect>(0);
     std::cout << "Created kinect" << std::endl;
-    cv::Mat rgb(S, CV_8UC3, Scalar(0));
+    
+    cv::Mat rgb(S, CV_8UC1, Scalar(0));
 
     std::signal(SIGINT, [](int) {
         die = true;
     });
     std::cout << "Set SIGINT handler" << std::endl;
+    
+    kinect.setVideoFormat(FREENECT_VIDEO_IR_8BIT);
 
     kinect.setFlag(FREENECT_AUTO_EXPOSURE, true);
     kinect.setFlag(FREENECT_AUTO_WHITE_BALANCE, true);
 
     kinect.startVideo();
 
-    kinect.setLed(LED_GREEN);
+//    kinect.setLed(LED_BLINK_GREEN);
     
     std::time_t end = std::clock();
     int elapsed = (end - start) / (double) (CLOCKS_PER_SEC / 1000);
     
     std::cout << "Initialization took " << elapsed << " ms"  << std::endl;
     
+    namedWindow("Linear Blend", WINDOW_AUTOSIZE);
+    cv::createTrackbar("Gamma", "Linear Blend", &gamma_cor, gamma_max, on_trackbar );
+    
     while(!die) {
+        
+        kinect.updateState();
         if (!kinect.GetVideo(rgb)) {
-            rgb = cv::Mat(640, 480, CV_8UC3, cv::Scalar(255, 0, 0));
+            rgb = cv::Mat(640, 480, CV_8UC1, cv::Scalar(255));
             std::cout << "Failed to get frame from kinect" << std::endl;
         }
-
-        outputVideo.write(rgb);
-        frames++;
-        if (frames == 60) {
-            frames = 0;
-            outputVideo.release();
-            std::string name = filename();
-            cout << name << endl;
-            outputVideo.open(name, fourcc, 20, S, true);
+        else {
+            Mat gamma = rgb.clone();
+            LUT(rgb, lookUpTable, gamma);
+            cv::imshow("rgb", rgb);
+            cv::imshow("Linear Blend", gamma);
+            char k = cv::waitKey(1);
         }
-        usleep(1000000);
+
+        
+        
+//        outputVideo.write(rgbt);
+//        cv::imwrite(filename("png"),rgb);
+        
+        frames++;
+//        if (frames == 10) {
+//            frames = 0;
+//            outputVideo.release();
+//            std::string name = filename("mkv");
+//            cout << name << endl;
+//            outputVideo.open(name, fourcc, 20, S, true);
+//        }
+//        usleep(100000);
     }
     std::cout << "Shutting down..." << std::endl;
     kinect.stopVideo();
